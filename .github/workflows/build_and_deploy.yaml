@@ -1,0 +1,30 @@
+name: "build and deploy"
+run-name: "Branch: ${{ github.ref_name }} Env: ${{ inputs.environment }}"
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Set the environment to build the container image"
+          required: true
+          type: choice
+          options:
+            - staging
+            - production
+      create-pr-in-manifest-repository:
+        description: "Create Pull Request in manifest repository"
+        required: true
+        type: boolean
+        default: false
+
+env:
+  MANIFEST_REPO: tkkawa/twitter-manifests
+
+jobs:
+  set-metadata:
+    name: set metadata
+    runs-on: ubuntu-latest
+    outputs:
+      container-args: ${{ steps.container-build.outputs.CONTAINER_BUILD_ARGS }}
+    steps:
+      - uses: actions/checkout@v4
+            
