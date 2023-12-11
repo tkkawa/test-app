@@ -20,17 +20,13 @@ env:
   MANIFEST_REPO: tkkawa/twitter-manifests
 
 jobs:
-  print-log:
+  set-metadata:
+    name: set metadata
     runs-on: ubuntu-latest
+    outputs:
+      container-args: ${{ steps.container-build.outputs.CONTAINER_BUILD_ARGS }}
     steps:
-    - name: print log
-      run: echo "Hello! ${{ github.event.inputs.environment }}"
-# jobs:
-#   set-metadata:
-#     name: set metadata
-#     runs-on: ubuntu-latest
-#     outputs:
-#       container-args: ${{ steps.container-build.outputs.CONTAINER_BUILD_ARGS }}
-#     steps:
-#       - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+      - name: print log
+        run: echo "Hello! ${{ github.event.inputs.environment }}"
             
