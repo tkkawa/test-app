@@ -30,8 +30,8 @@ jobs:
       - id: container-build-args
         run: |
         
-          CURRENT_TAG=""
           INPUT_TYPE=$(echo "${{ github.ref }}" | awk -F '/' '{print $2}')
+          CURRENT_TAG=""
           if [ ${INPUT_TYPE} = "tags"] ;then
             CURRENT_TAG=${{ github.event.inputs.environment }}"
           else
