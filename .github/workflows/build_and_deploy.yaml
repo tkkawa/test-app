@@ -29,6 +29,7 @@ jobs:
       - uses: actions/checkout@v4
       - id: container-build-args
         run: |
+        
           CURRENT_TAG=""
           INPUT_TYPE=$(echo "${{ github.ref }}" | awk -F '/' '{print $2}')
           if [ ${INPUT_TYPE} = "tags"] ;then
