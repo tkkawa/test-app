@@ -24,7 +24,7 @@ jobs:
     name: set metadata
     runs-on: ubuntu-latest
     outputs:
-      container-args: ${{ steps.container-build.outputs.CONTAINER_BUILD_ARGS }}
+      container-args: ${{ steps.container-build-args.outputs.CONTAINER_BUILD_ARGS }}
     steps:
       - uses: actions/checkout@v4
       - name: container-build-args
@@ -41,7 +41,7 @@ jobs:
           echo ${CURRENT_TAG}
 
           echo 'CONTAINER_BUILD_ARGS<<'${EOF} >> $GITHUB_OUTPUT
-          echo 'CURRENT_TAG='${CURRENT_TAG} >> GITHUB_OUTPUT
+          echo 'CURRENT_TAG='${CURRENT_TAG} >> $GITHUB_OUTPUT
           echo ${EOF} >> $GITHUB_OUTPUT
       - name: print log
         run: echo "Hello! ${{ github.event.inputs.environment }}"
