@@ -30,21 +30,22 @@ jobs:
       - name: container-build-args
         run: |
 
-          INPUT_TYPE=$(echo "${{ github.ref }}" | awk -F '/' '{print $2}')
           CURRENT_TAG=""
-          if [ "${INPUT_TYPE}" = "tags"] ;then
-            CURRENT_TAG="${{ github.event.inputs.environment }}"
-          else
-            CURRENT_TAG=$(git describe --tags --abbrev=0 --match 'v*')
-          if 
+          # INPUT_TYPE=$(echo "${{ github.ref }}" | awk -F '/' '{print $2}')
+          
+          # if [ "${INPUT_TYPE}" = "tags"] ;then
+          #   CURRENT_TAG="${{ github.event.inputs.environment }}"
+          # else
+          #   CURRENT_TAG=$(git describe --tags --abbrev=0 --match 'v*')
+          # if 
             
-          echo ${CURRENT_TAG}
+          # echo ${CURRENT_TAG}
 
-          EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
+          # EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
 
-          echo 'CONTAINER_BUILD_ARGS<<'${EOF} >> $GITHUB_OUTPUT
-          echo 'CURRENT_TAG='${CURRENT_TAG} >> $GITHUB_OUTPUT
-          echo ${EOF} >> $GITHUB_OUTPUT
+          # echo 'CONTAINER_BUILD_ARGS<<'${EOF} >> $GITHUB_OUTPUT
+          # echo 'CURRENT_TAG='${CURRENT_TAG} >> $GITHUB_OUTPUT
+          # echo ${EOF} >> $GITHUB_OUTPUT
       - name: print log
         run: echo "Hello! ${{ github.event.inputs.environment }}"
             
