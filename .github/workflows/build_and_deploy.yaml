@@ -40,6 +40,8 @@ jobs:
             
           echo ${CURRENT_TAG}
 
+          EOF=$(dd if=/dev/urandom bs=15 count=1 statuts=none | base64)
+
           echo 'CONTAINER_BUILD_ARGS<<'${EOF} >> $GITHUB_OUTPUT
           echo 'CURRENT_TAG='${CURRENT_TAG} >> $GITHUB_OUTPUT
           echo ${EOF} >> $GITHUB_OUTPUT
