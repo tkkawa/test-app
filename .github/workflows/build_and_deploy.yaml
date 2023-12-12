@@ -34,9 +34,9 @@ jobs:
           INPUT_TYPE=$(echo "${{ github.ref }}" | awk -F '/' '{print $2}')
           
           if [ "${INPUT_TYPE}" = "tags" ];then
-            CURRENT_TAG="${{ github.event.inputs.environment }}"
-          else
             CURRENT_TAG=$(git describe --tags --abbrev=0 --match 'v*')
+          else
+            CURRENT_TAG="${{ github.event.inputs.environment }}"
           fi
             
           echo ${CURRENT_TAG}
