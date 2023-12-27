@@ -20,10 +20,11 @@ env:
   MANIFEST_REPO: tkkawa/twitter-manifests
 
 jobs:
-  set-metadata:
-    name: set metadata
+  set-args:
+    name: set args
     runs-on: ubuntu-latest
     outputs:
+      manifests-repository: ${{ env.MANIFEST_REPO }}
       container-args: ${{ steps.container-build-args.outputs.CONTAINER_BUILD_ARGS }}
     steps:
       - uses: actions/checkout@v4
@@ -48,4 +49,12 @@ jobs:
           echo ${EOF} >> $GITHUB_OUTPUT
       - name: print log
         run: echo "Hello! ${{ github.event.inputs.environment }}"
+  call-workflow:
+    uses: ./.github/actions/image_build/v1
+    needs: set-args
+    with:
+      contiainer-args: ${{ needs.set-args.outpus.container-args }}
+      create-pr-in-manifest-repository: ${{ inputs.create-pr-in-manifest-repository }}
+
+
             
