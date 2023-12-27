@@ -6,7 +6,7 @@ on:
       contiainer-args:
         required: true
         type: string
-      manifest-repository:
+      manifests-repository:
         required: true
         type: string
 
