@@ -1,15 +1,12 @@
 name: "Build the image"
-description: ""
 
 on:
   workflow_call:
     inputs:
       contiainer-args:
-        description: "Args to build the image"
         required: true
         type: string
       manifest-repository:
-        description: "Manifest repository name"
         required: true
         type: string
 
