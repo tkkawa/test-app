@@ -54,7 +54,5 @@ jobs:
     needs: set-args
     with:
       contiainer-args: ${{ needs.set-args.outpus.container-args }}
-      create-pr-in-manifest-repository: ${{ inputs.create-pr-in-manifest-repository }}
-
-
+      manifests-repository: ${{ needs.set-args.outpus.manifests-repository }}
             
