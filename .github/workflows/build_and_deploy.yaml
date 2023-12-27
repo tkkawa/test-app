@@ -50,7 +50,7 @@ jobs:
       - name: print log
         run: echo "Hello! ${{ github.event.inputs.environment }}"
   call-workflow:
-    uses: ../image_build/v1
+    uses: tkkawa/test-app/image_build/v1/action.yaml@main
     needs: set-args
     with:
       contiainer-args: ${{ needs.set-args.outpus.container-args }}
