@@ -8,7 +8,7 @@ inputs:
     description: "Manifest repository name"
     required: true
 
-jobs:
+runs:
   build_and_push:
     name: Build and push
     runs-on: ubuntu-latest
