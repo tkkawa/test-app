@@ -49,20 +49,19 @@ jobs:
           echo ${EOF} >> $GITHUB_OUTPUT
       - name: print log
         run: echo "Hello! ${{ github.event.inputs.environment }}"
-  call-workflow:
-    name: build image and create pr
-    runs-on: ubuntu-latest
-    steps:
-      - name: build image
-        uses: tkkawa/test-app/.github/workflows/build_image.yaml@main
-        needs: set-args
-        with:
-          contiainer-args: ${{ needs.set-args.outpus.container-args }}
-          manifests-repository: ${{ needs.set-args.outpus.manifests-repository }}
-        secrets:
-          dockerhub-username: ${{ secrets.DOCKERHUB_USERNAME }}
-          dockerhub-token: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: print log2
-        run: echo "Hello! ${{ github.event.inputs.environment }}"
+  build_image:
+    uses: tkkawa/test-app/.github/workflows/build_image.yaml@main
+    needs: set-args
+    with:
+      contiainer-args: ${{ needs.set-args.outpus.container-args }}
+      manifests-repository: ${{ needs.set-args.outpus.manifests-repository }}
+    secrets:
+      dockerhub-username: ${{ secrets.DOCKERHUB_USERNAME }}
+      dockerhub-token: ${{ secrets.DOCKERHUB_TOKEN }}
+
+  create_pr:
+    needs: build_image
+    run: echo "Create PR! ${{ needs.build_image.outputs.image-tag }}"
+
       
             

@@ -14,6 +14,10 @@ on:
         required: true
       dockerhub-token:
         required: true
+outputs:
+  image-tag:
+    description: "Image tag"
+    value: ${{ steps.build-info.outputs.image-tag }}
 
 jobs:
   build_and_push:
@@ -36,6 +40,11 @@ jobs:
         with:
           context: ./docker
           push: true
-          tags: kawa1/github-actions-test:latest
+          tags: kawa1/github-actions-test:${{ inputs.container-args.CURRENT_TAG}}
+      - name: build info
+        id: build-info
+        run: | 
+          echo "image-tag=$(echo ${IMAGE_TAG})" >> $GITHUB_OUTPUT
+        shell: bash
       - name: Print args
         run: echo "Hello! ${{ inputs.container-args }} and ${{ inputs.manifest-repository }}"
