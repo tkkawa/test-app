@@ -50,12 +50,15 @@ jobs:
       - name: print log
         run: echo "Hello! ${{ github.event.inputs.environment }}"
   call-workflow:
-    uses: tkkawa/test-app/.github/workflows/build_image.yaml@main
-    needs: set-args
-    with:
-      contiainer-args: ${{ needs.set-args.outpus.container-args }}
-      manifests-repository: ${{ needs.set-args.outpus.manifests-repository }}
-    secrets:
-      dockerhub-username: ${{ secrets.DOCKERHUB_USERNAME }}
-      dockerhub-token: ${{ secrets.DOCKERHUB_TOKEN }}
+    steps:
+      - name: build image
+        uses: tkkawa/test-app/.github/workflows/build_image.yaml@main
+        needs: set-args
+        with:
+          contiainer-args: ${{ needs.set-args.outpus.container-args }}
+          manifests-repository: ${{ needs.set-args.outpus.manifests-repository }}
+        secrets:
+          dockerhub-username: ${{ secrets.DOCKERHUB_USERNAME }}
+          dockerhub-token: ${{ secrets.DOCKERHUB_TOKEN }}
+      
             
