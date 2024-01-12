@@ -59,9 +59,9 @@ jobs:
       dockerhub-username: ${{ secrets.DOCKERHUB_USERNAME }}
       dockerhub-token: ${{ secrets.DOCKERHUB_TOKEN }}
 
-  create_pr:
-    needs: build_image
-    run: echo "Create PR! ${{ needs.build_image.outputs.image-tag }}"
+  # create_pr:
+  #   needs: build_image
+  #   run: echo "Create PR! ${{ needs.build_image.outputs.image-tag }}"
 
       
             
