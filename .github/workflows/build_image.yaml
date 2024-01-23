@@ -37,7 +37,7 @@ jobs:
           password: ${{ secrets.dockerhub-token }}
       - name: Set image tag
         id: set-image-tag
-        run | 
+        run: | 
           IMAGE_TAG="kawa1/github-actions-test:${{ inputs.container-args.CURRENT_TAG}}"
           echo "IMAGE_TAG={$IMAGE_TAG}" >> ${GITHUB_ENV}
       - name: Build and push
