@@ -55,7 +55,7 @@ jobs:
     with:
       # contiainer-args: ${{ needs.set-args.outpus.container-args }}
       # manifests-repository: ${{ needs.set-args.outpus.manifests-repository }}
-      manifests-repository: ${{ env.MANIFEST_REPO }}
+      manifests-repository: tkkawa/twitter-manifests
     secrets:
       dockerhub-username: ${{ secrets.DOCKERHUB_USERNAME }}
       dockerhub-token: ${{ secrets.DOCKERHUB_TOKEN }}
