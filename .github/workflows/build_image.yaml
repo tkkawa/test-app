@@ -14,15 +14,15 @@ on:
         required: true
       dockerhub-token:
         required: true
-outputs:
-  image-tag:
-    description: "Image tag"
-    value: ${{ steps.build-info.outputs.image-tag }}
 
 jobs:
   build_and_push:
     name: Build and push
     runs-on: ubuntu-latest
+    outputs:
+    image-tag:
+      description: "Image tag"
+      value: ${{ steps.build-info.outputs.image-tag }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
