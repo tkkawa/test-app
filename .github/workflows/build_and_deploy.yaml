@@ -20,41 +20,42 @@ env:
   MANIFEST_REPO: tkkawa/twitter-manifests
 
 jobs:
-  set-args:
-    name: set args
-    runs-on: ubuntu-latest
-    outputs:
-      manifests-repository: ${{ env.MANIFEST_REPO }}
-      container-args: ${{ steps.container-build-args.outputs.CONTAINER_BUILD_ARGS }}
-    steps:
-      - uses: actions/checkout@v4
-      - name: container-build-args
-        run: |
+  # set-args:
+  #   name: set args
+  #   runs-on: ubuntu-latest
+  #   outputs:
+  #     manifests-repository: ${{ env.MANIFEST_REPO }}
+  #     container-args: ${{ steps.container-build-args.outputs.CONTAINER_BUILD_ARGS }}
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - name: container-build-args
+  #       run: |
 
-          CURRENT_TAG=""
-          INPUT_TYPE=$(echo "${{ github.ref }}" | awk -F '/' '{print $2}')
+  #         CURRENT_TAG=""
+  #         INPUT_TYPE=$(echo "${{ github.ref }}" | awk -F '/' '{print $2}')
           
-          if [ "${INPUT_TYPE}" = "tags" ];then
-            CURRENT_TAG=$(git describe --tags --abbrev=0 --match 'v*')
-          else
-            CURRENT_TAG="${{ github.event.inputs.environment }}"
-          fi
+  #         if [ "${INPUT_TYPE}" = "tags" ];then
+  #           CURRENT_TAG=$(git describe --tags --abbrev=0 --match 'v*')
+  #         else
+  #           CURRENT_TAG="${{ github.event.inputs.environment }}"
+  #         fi
             
-          echo ${CURRENT_TAG}
+  #         echo ${CURRENT_TAG}
 
-          EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
+  #         EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
 
-          echo 'CONTAINER_BUILD_ARGS<<'${EOF} >> $GITHUB_OUTPUT
-          echo 'CURRENT_TAG='${CURRENT_TAG} >> $GITHUB_OUTPUT
-          echo ${EOF} >> $GITHUB_OUTPUT
-      - name: print log
-        run: echo "Hello! ${{ github.event.inputs.environment }}"
+  #         echo 'CONTAINER_BUILD_ARGS<<'${EOF} >> $GITHUB_OUTPUT
+  #         echo 'CURRENT_TAG='${CURRENT_TAG} >> $GITHUB_OUTPUT
+  #         echo ${EOF} >> $GITHUB_OUTPUT
+  #     - name: print log
+  #       run: echo "Hello! ${{ github.event.inputs.environment }}"
   build_image:
     uses: tkkawa/test-app/.github/workflows/build_image.yaml@main
-    needs: set-args
+    # needs: set-args
     with:
-      contiainer-args: ${{ needs.set-args.outpus.container-args }}
-      manifests-repository: ${{ needs.set-args.outpus.manifests-repository }}
+      # contiainer-args: ${{ needs.set-args.outpus.container-args }}
+      # manifests-repository: ${{ needs.set-args.outpus.manifests-repository }}
+      manifests-repository: ${{ env.MANIFEST_REPO }}
     secrets:
       dockerhub-username: ${{ secrets.DOCKERHUB_USERNAME }}
       dockerhub-token: ${{ secrets.DOCKERHUB_TOKEN }}
