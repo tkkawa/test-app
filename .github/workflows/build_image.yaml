@@ -36,7 +36,8 @@ jobs:
       - name: Set image tag
         id: set-image-tag
         run: | 
-          IMAGE_TAG="kawa1/github-actions-test:${{ inputs.container-args.CURRENT_TAG}}"
+          SHORT_SHA=$(git rev-parse --short HEAD)
+          IMAGE_TAG="${{ inputs.container-args.CURRENT_TAG}}-${SHORT_SHA}"
           echo "IMAGE_TAG={$IMAGE_TAG}" >> ${GITHUB_ENV}
         shell: bash
       - name: Build and push
@@ -44,7 +45,8 @@ jobs:
         with:
           context: ./docker
           push: true
-          tags: ${{ env.IMAGE_TAG }}
+          # tags: ${{ env.IMAGE_TAG }}
+          tags: kawa1/github-actions-test:${{ env.IMAGE_TAG }}
       - name: build info
         id: build-info
         run: | 
