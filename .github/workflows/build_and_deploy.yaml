@@ -26,14 +26,16 @@ jobs:
       - name: checkout
         uses: actions/checkout@v3
         with:
-          repository: tkkawa/test-app
-          # ref: main
-          # token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          # repository: tkkawa/test-app
+          submodules: recursive
+          ref: main
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          fetch-depth: 0
           # path: ./.github/actions/test-app
       - name: build image
         id: build-image
         # uses: tkkawa/test-app/.github/workflows/build_image.yaml@main
-        uses: ./.github/actions/test-app/build_image
+        uses: ./.github/actions/build_image
         with:
           manifests-repository: tkkawa/twitter-manifests
           dockerhub-username: ${{ secrets.DOCKERHUB_USERNAME }}
