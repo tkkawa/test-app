@@ -3,9 +3,6 @@ name: "Build the image"
 on:
   workflow_call:
     inputs:
-      # contiainer-args:
-      #   required: true
-      #   type: string
       manifests-repository:
         required: true
         type: string
@@ -38,12 +35,6 @@ jobs:
             
           echo ${CURRENT_TAG}
           echo 'CURRENT_TAG='${CURRENT_TAG} >> $GITHUB_ENV
-
-          # EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
-
-          # echo 'CONTAINER_BUILD_ARGS<<'${EOF} >> $GITHUB_OUTPUT
-          # echo 'CURRENT_TAG='${CURRENT_TAG} >> $GITHUB_OUTPUT
-          # echo ${EOF} >> $GITHUB_OUTPUT
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
@@ -65,7 +56,6 @@ jobs:
         with:
           context: ./docker
           push: true
-          # tags: ${{ env.IMAGE_TAG }}
           tags: kawa1/github-actions-test:${{ env.IMAGE_TAG }}
       - name: build info
         id: build-info
