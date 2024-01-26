@@ -10,7 +10,7 @@ inputs:
 
 outputs:
   image-tag:
-    values: ${{ steps.build-info.outputs.image-tag }}
+    value: ${{ steps.build-info.outputs.image-tag }}
 
 runs:
   steps:
