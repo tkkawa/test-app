@@ -21,18 +21,33 @@ env:
 
 jobs:
   build_image:
-    uses: tkkawa/test-app/.github/workflows/build_image.yaml@main
-    with:
-      manifests-repository: tkkawa/twitter-manifests
-    secrets:
-      dockerhub-username: ${{ secrets.DOCKERHUB_USERNAME }}
-      dockerhub-token: ${{ secrets.DOCKERHUB_TOKEN }}
-  create_pr:
-    needs: build_image
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Create PR
-        run: echo "Create PR! ${{ needs.build_image.outputs.image-tag }}" 
+      - name: build image
+        id: build-image
+        uses: tkkawa/test-app/.github/workflows/build_image.yaml@main
+        with:
+          manifests-repository: tkkawa/twitter-manifests
+        secrets:
+          dockerhub-username: ${{ secrets.DOCKERHUB_USERNAME }}
+          dockerhub-token: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: create_pr
+        run: echo "Create PR! ${{ steps.build-image.outputs.image-tag }}" 
+
+
+  # build_image:
+  #   uses: tkkawa/test-app/.github/workflows/build_image.yaml@main
+  #   with:
+  #     manifests-repository: tkkawa/twitter-manifests
+  #   secrets:
+  #     dockerhub-username: ${{ secrets.DOCKERHUB_USERNAME }}
+  #     dockerhub-token: ${{ secrets.DOCKERHUB_TOKEN }}
+  # create_pr:
+  #   needs: build_image
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v4
+  #     - name: Create PR
+  #       run: echo "Create PR! ${{ needs.build_image.outputs.image-tag }}" 
             
