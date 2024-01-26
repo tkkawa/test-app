@@ -23,17 +23,17 @@ jobs:
   build_image:
     runs-on: ubuntu-latest
     steps:
-      - name: checkout
-        uses: actions/checkout@v3
-        with:
-          repository: tkkawa/test-app
-          ref: main
-          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          path: ./.github/actions/test-app
+      # - name: checkout
+      #   uses: actions/checkout@v3
+      #   with:
+      #     repository: tkkawa/test-app
+      #     ref: main
+      #     token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+      #     path: ./.github/actions/test-app
       - name: build image
         id: build-image
         # uses: tkkawa/test-app/.github/workflows/build_image.yaml@main
-        uses: ./.github/actions/test-app/image_build/v1
+        uses: ./.github/actions/test-app/build_image
         with:
           manifests-repository: tkkawa/twitter-manifests
           dockerhub-username: ${{ secrets.DOCKERHUB_USERNAME }}
