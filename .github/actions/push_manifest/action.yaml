@@ -13,6 +13,9 @@ inputs:
   overlays-path:
     description: "Kustomization overlay path"
     requried: true
+  github-personal-access-token:
+    description: "GitHub Personal Access Token"
+    required: true
 
 runs:
   using: "composite"
@@ -23,7 +26,7 @@ runs:
         repository: ${{ inputs.manifest-repository }}
         ref: ${{ inputs.manifest-base-branch }}
         path: manifests
-        token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+        token: ${{ inputs.github-personal-access-token }}
         fetch-depth: 0
     - name: change k8s manifest
       uses: mikefarah/yq@v4.5.1

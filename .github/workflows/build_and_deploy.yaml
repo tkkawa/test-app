@@ -46,5 +46,6 @@ jobs:
           manifest-base-branch: main
           image-tag: ${{ steps.build-image.outputs.image-tag }}
           overlays-path: "sample/overlays/staging"
+          github-personal-access-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
         # run: echo "Create PR! ${{ steps.build-image.outputs.image-tag }}" 
             
