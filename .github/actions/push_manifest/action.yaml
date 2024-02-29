@@ -39,6 +39,7 @@ runs:
         set -ex
         git add ${{ inputs.overlays-path }}/kustomization.yaml
         git commit -m "Update manifest"
+      shell: bash
     - name: push manifest
       uses: ad-m/github-push-action@master
       with:
