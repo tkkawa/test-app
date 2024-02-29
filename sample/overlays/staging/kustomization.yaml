@@ -1,0 +1,7 @@
+namespace: staging
+resources:
+  - ../../base
+images:
+  - name: sample
+    newName: testname
+    newTag: testtag

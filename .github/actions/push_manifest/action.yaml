@@ -1,0 +1,45 @@
+name: "Push manifest"
+
+inputs:
+  manifest-repository:
+    description: "Manifest repository name"
+    required: true
+  manifest-base-branch:
+    description: "Manifest base branch name"
+    required: true
+  image-tag:
+    description: "Container image tag"
+    required: true
+  overlays-path:
+    description: "Kustomization overlay path"
+    requried: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: checkout
+      uses: actions/checkout@v3
+      with:
+        repository: ${{ inputs.manifest-repository }}
+        ref: ${{ inputs.manifest-base-branch }}
+        path: manifests
+        token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+        fetch-depth: 0
+    - name: change k8s manifest
+      uses: mikefarah/yq@v4.5.1
+      with:
+        cmd: |
+          yq eval '(.images.[] | select(.name == "${{ inputs.image-tag }}")).newTag="${{ inputs.image-tag }}"' -i manifests/${{ inputs.overlays-path }}/kustomization.yaml
+    - name: commit manifest
+      working-directory: manifests
+      run: |
+        set -ex
+        git add ${{ inputs.overlays-path }}/kustomization.yaml
+        git commit -m "Update manifest"
+    - name: push manifest
+      uses: ad-m/github-push-action@master
+      with:
+        branch: ${{ inputs.manifest-base-branch }}
+        directory: manifests
+        github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+        repository: ${{ inputs.manifest-repository }}
