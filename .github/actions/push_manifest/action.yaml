@@ -44,5 +44,5 @@ runs:
       with:
         branch: ${{ inputs.manifest-base-branch }}
         directory: manifests
-        github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+        github_token: ${{ inputs.github-personal-access-token }}
         repository: ${{ inputs.manifest-repository }}
