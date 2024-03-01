@@ -32,7 +32,7 @@ runs:
       uses: mikefarah/yq@v4.5.1
       with:
         cmd: |
-          yq eval '(.images.[] | select(.name == "${{ inputs.image-tag }}")).newTag="${{ inputs.image-tag }}"' -i manifests/${{ inputs.overlays-path }}/kustomization.yaml
+          yq eval '(.images.[] | select(.name == "sample")).newTag="${{ inputs.image-tag }}"' -i manifests/${{ inputs.overlays-path }}/kustomization.yaml
     - name: commit manifest
       working-directory: manifests
       run: |
