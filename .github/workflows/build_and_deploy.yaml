@@ -17,7 +17,7 @@ on:
         default: false
 
 env:
-  MANIFEST_REPO: tkkawa/twitter-manifests
+  MANIFEST_REPO: tkkawa/test-app
 
 jobs:
   build_image:
