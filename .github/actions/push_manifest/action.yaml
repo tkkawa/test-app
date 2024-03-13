@@ -13,6 +13,9 @@ inputs:
   overlays-path:
     description: "Kustomization overlay path"
     requried: true
+  create-pr:
+    description: "Flag to determine creating PR"
+    required: true
   github-personal-access-token:
     description: "GitHub Personal Access Token"
     required: true
@@ -42,10 +45,26 @@ runs:
         git add ${{ inputs.overlays-path }}/kustomization.yaml
         git commit -m "Update manifest"
       shell: bash
-    - name: push manifest
+    - name: push manifest to main
+      if: ${{ !inputs.create-pr }}
       uses: ad-m/github-push-action@master
       with:
         branch: ${{ inputs.manifest-base-branch }}
         directory: manifests
         github_token: ${{ inputs.github-personal-access-token }}
         repository: ${{ inputs.manifest-repository }}
+    - name: push manifest to release tag
+      if: ${{ inputs.create-pr }}
+      uses: ad-m/github-push-action@master
+      with:
+        branch: ${{ inputs.image-tag }}
+        directory: manifests
+        github_token: ${{ inputs.github-personal-access-token }}
+        repository: ${{ inputs.manifest-repository }}
+    - name: create pull request
+      if: ${{ inputs.create-pr }}
+      working-directory: manifests
+      env:
+        GITHUB_TOKEN: ${{ inputs.github-personal-access-token }}
+      run: hub pull-request -b main -f -h ${{ inputs.image-tag }} -m "Test PR"
+      shell: bash

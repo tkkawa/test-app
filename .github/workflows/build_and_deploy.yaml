@@ -37,15 +37,16 @@ jobs:
           manifests-repository: tkkawa/twitter-manifests
           dockerhub-username: ${{ secrets.DOCKERHUB_USERNAME }}
           dockerhub-token: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: create pull request
-        id: create-pr
-        if: ${{ inputs.create-pr-in-manifest-repository }}
+      - name: change manifest
+        id: change-manifest
         uses: ./.github/actions/push_manifest
         with:
           manifest-repository: ${{ env.MANIFEST_REPO }}
           manifest-base-branch: main
           image-tag: ${{ steps.build-image.outputs.image-tag }}
           overlays-path: "sample/overlays/staging"
+          create-pr: ${{ inputs.create-pr-in-manifest-repository }}
           github-personal-access-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
         # run: echo "Create PR! ${{ steps.build-image.outputs.image-tag }}" 
+
             
