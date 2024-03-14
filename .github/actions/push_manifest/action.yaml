@@ -24,7 +24,7 @@ runs:
   using: "composite"
   steps:
     - name: checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         repository: ${{ inputs.manifest-repository }}
         ref: ${{ inputs.manifest-base-branch }}
@@ -65,6 +65,6 @@ runs:
       if: ${{ inputs.create-pr }}
       working-directory: manifests
       env:
-        GITHUB_TOKEN: ${{ inputs.github-personal-access-token }}
-      run: hub pull-request -b main -f -h ${{ inputs.image-tag }} -m "Test PR"
+        GH_TOKEN: ${{ inputs.github-personal-access-token }}
+      run: gh pr create -B main -H ${{ inputs.image-tag }} -t "Test PR" -b ""
       shell: bash
