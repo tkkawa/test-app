@@ -15,6 +15,13 @@ on:
         required: true
         type: boolean
         default: false
+      how-to-build:
+        description: "Choose how to build an image"
+        required: true
+        type: choice
+        options:
+          - docker
+          - bazel
 
 env:
   MANIFEST_REPO: tkkawa/test-app
@@ -37,6 +44,7 @@ jobs:
           manifests-repository: tkkawa/twitter-manifests
           dockerhub-username: ${{ secrets.DOCKERHUB_USERNAME }}
           dockerhub-token: ${{ secrets.DOCKERHUB_TOKEN }}
+          how-to-build: ${{ inputs.how-to-build }}
       - name: change manifest
         id: change-manifest
         uses: ./.github/actions/push_manifest
