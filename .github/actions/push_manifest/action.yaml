@@ -46,7 +46,7 @@ runs:
         git commit -m "Update manifest"
       shell: bash
     - name: push manifest to main
-      if: ${{ !inputs.create-pr }}
+      if: [ "${{ inputs.create-pr }}" == "false" ]
       uses: ad-m/github-push-action@master
       with:
         branch: ${{ inputs.manifest-base-branch }}
@@ -54,7 +54,7 @@ runs:
         github_token: ${{ inputs.github-personal-access-token }}
         repository: ${{ inputs.manifest-repository }}
     - name: push manifest to release tag
-      if: ${{ inputs.create-pr }}
+      if: [ "${{ inputs.create-pr }}" == "true" ]
       uses: ad-m/github-push-action@master
       with:
         branch: ${{ inputs.image-tag }}
@@ -62,7 +62,7 @@ runs:
         github_token: ${{ inputs.github-personal-access-token }}
         repository: ${{ inputs.manifest-repository }}
     - name: create pull request
-      if: ${{ inputs.create-pr }}
+      if: [ "${{ inputs.create-pr }}" == "true" ]
       working-directory: manifests
       env:
         GH_TOKEN: ${{ inputs.github-personal-access-token }}
