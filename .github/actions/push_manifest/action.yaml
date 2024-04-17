@@ -40,13 +40,14 @@ runs:
       working-directory: manifests
       run: |
         set -ex
+        echo ${{ inputs.create-pr }}
         git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
         git config user.name "github-actions[bot]"
         git add ${{ inputs.overlays-path }}/kustomization.yaml
         git commit -m "Update manifest"
       shell: bash
     - name: push manifest to main
-      if: [ "${{ inputs.create-pr }}" == "false" ]
+      if: ${{ !inputs.create-pr }}
       uses: ad-m/github-push-action@master
       with:
         branch: ${{ inputs.manifest-base-branch }}
@@ -54,7 +55,7 @@ runs:
         github_token: ${{ inputs.github-personal-access-token }}
         repository: ${{ inputs.manifest-repository }}
     - name: push manifest to release tag
-      if: [ "${{ inputs.create-pr }}" == "true" ]
+      if: ${{ inputs.create-pr }}
       uses: ad-m/github-push-action@master
       with:
         branch: ${{ inputs.image-tag }}
@@ -62,7 +63,7 @@ runs:
         github_token: ${{ inputs.github-personal-access-token }}
         repository: ${{ inputs.manifest-repository }}
     - name: create pull request
-      if: [ "${{ inputs.create-pr }}" == "true" ]
+      if: ${{ inputs.create-pr }}
       working-directory: manifests
       env:
         GH_TOKEN: ${{ inputs.github-personal-access-token }}
