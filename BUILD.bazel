@@ -4,7 +4,7 @@ container_image(
     name = "go-image",
     base = "@golang_latest//image",
     files = [
-        ":cmd/test.yaml",
+        "cmd/test.yaml",
     ],
     workdir = "/workspace",
 )

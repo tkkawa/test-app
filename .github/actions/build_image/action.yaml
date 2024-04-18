@@ -59,6 +59,7 @@ runs:
       if: inputs.how-to-build == 'bazel'
       run: |
         bazel build "//:image-push"
+        bazel run "//:image-push"
       shell: bash
     - name: build info
       id: build-info
