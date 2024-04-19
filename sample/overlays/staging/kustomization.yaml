@@ -4,4 +4,4 @@ resources:
 images:
   - name: sample
     newName: testname
-    newTag: staging-28349db
+    newTag: staging-e1b60b4
