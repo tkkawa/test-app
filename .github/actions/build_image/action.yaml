@@ -58,7 +58,7 @@ runs:
     - name: Build and push using bazel
       if: inputs.how-to-build == 'bazel'
       run: |
-        sed -i '' 's/tag = "latest"/tag = "${{ env.IMAGE_TAG }}"/' BUILD.bazel
+        sed -i 's/tag = "latest"/tag = "${{ env.IMAGE_TAG }}"/' BUILD.bazel
         bazel build "//:image-push"
         bazel run "//:image-push"
       shell: bash
