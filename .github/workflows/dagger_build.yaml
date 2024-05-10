@@ -12,4 +12,7 @@ jobs:
           go-version-file: go.mod
           cache: true
       - name: ci
-        run: go run ./main.go {{ secrets.DOCKERHUB_PAT }}
+        env:
+          DOCKERHUB_PAT: {{ secrets.DOCKERHUB_PAT }}
+        run: go run ./main.go $DOCKERHUB_PAT
+        shell: bash
