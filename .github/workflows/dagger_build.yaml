@@ -13,6 +13,6 @@ jobs:
           cache: true
       - name: ci
         env:
-          DOCKERHUB_PAT: {{ secrets.DOCKERHUB_PAT }}
+          DOCKERHUB_PAT: ${{ secrets.DOCKERHUB_PAT }}
         run: go run ./main.go $DOCKERHUB_PAT
         shell: bash
