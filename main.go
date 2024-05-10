@@ -26,8 +26,7 @@ func main() {
     addr, err := client.Host().Directory("./docker").
         DockerBuild().
         WithRegistryAuth(privateRegistryHost, username, client.SetSecret("dockerhub-secret", DOCKER_HUB_PAT)).
-        // Publish(ctx, "taniaitest.azurecr.io/myexample:with-dockerfile")
-        Publish(ctx, fmt.Sprintf("%s/%s:%s", username, name, "latest"))
+        Publish(ctx, fmt.Sprintf("%s/%s:%s", username, name, "v2153"))
     if err != nil {
         panic(err)
     }
