@@ -1,69 +1,34 @@
 package main
 
 import (
-	"context"
-	"fmt"
-	"os"
-	"path/filepath"
+    "context"
+    "flag"
+    "fmt"
+    "os"
 
-	"dagger.io/dagger"
+    "dagger.io/dagger"
 )
 
 func main() {
-	if err := build(); err != nil {
-		fmt.Println(err)
-	}
-}
+    ctx := context.Background()
+    client, err := dagger.Connect(ctx, dagger.WithLogOutput(os.Stderr))
+    if err != nil {
+        panic(err)
+    }
+    defer client.Close()
 
-func build() error {
-	ctx := context.Background()
-
-	// クライアントを初期化して Dagger Engine に接続する
-	// dagger.WithLogOutput でログの出力先を指定できる
-	client, err := dagger.Connect(ctx, dagger.WithLogOutput(os.Stdout))
-	if err != nil {
-		panic(err)
-	}
-	defer client.Close()
-
-	// Docker イメージを取得する
-	container := client.Container().From("golang:1.19")
-
-	// カレントディレクトリをコンテナにマウントする
-	src := client.Host().Directory(".")
-	container = container.
-		WithMountedDirectory("/workspace", src).
-		WithWorkdir("/workspace")
-
-	// テストを実行
-	// container = container.WithExec([]string{"go", "test", "-v", "./..."})
-
-	path := "build/"
-	outpath := filepath.Join(".", path)
-	err = os.MkdirAll(outpath, os.ModePerm)
-	if err != nil {
-		return err
-	}
-	// container = container.Exec(dagger.ContainerExecOpts{
-	// 	Args: []string{"go", "build", "-o", "build/"},
-	// })
-
-	// output, err := container.Directory(path).ID(ctx)
-	// if err != nil {
-	// 	return err
-	// }
-
-
-	container = container.WithExec([]string{"go", "build", "-o", outpath})
-
-	outputs := client.Directory()
-	outputs = outputs.WithDirectory(outpath, container.Directory(outpath))
-
-	// パイプラインを実行する
-	// Export でビルド先のディレクトリをホストに書き込む
-	if _, err := outputs.Export(ctx, "."); err != nil {
-		panic(err)
-	}
-
-	return nil
+    flag.Parse()
+    DOCKER_HUB_PAT := flag.Args()[0]
+    privateRegistryHost := "https://hub.docker.com"
+    username := "kawa1"
+    name := "github-actions-test"
+    addr, err := client.Host().Directory("./docker").
+        DockerBuild().
+        WithRegistryAuth(privateRegistryHost, username, client.SetSecret("dockerhub-secret", DOCKER_HUB_PAT)).
+        // Publish(ctx, "taniaitest.azurecr.io/myexample:with-dockerfile")
+        Publish(ctx, fmt.Sprintf("%s/%s:%s", username, name, "latest"))
+    if err != nil {
+        panic(err)
+    }
+    fmt.Printf("Published to %s", addr)
 }

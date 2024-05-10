@@ -12,4 +12,4 @@ jobs:
           go-version-file: go.mod
           cache: true
       - name: ci
-        run: go run ./main.go
+        run: go run ./main.go {{ secrets.DOCKERHUB_PAT }}
