@@ -19,6 +19,7 @@ func main() {
 
     flag.Parse()
     DOCKER_HUB_PAT := flag.Args()[0]
+    fmt.Println(len(DOCKER_HUB_PAT))
     privateRegistryHost := "https://hub.docker.com"
     username := "kawa1"
     name := "github-actions-test"
