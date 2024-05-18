@@ -17,7 +17,7 @@ jobs:
           go-version: ">=1.17"
       - name: Format code
         run: |
-          GOFILES = $(gofmt -l .)
+          GOFILES=$(gofmt -l .)
           echo 'GOFILES='$(GOFILES) >> $GITHUB_ENV
         shell: bash
       - name: Comment to PR
