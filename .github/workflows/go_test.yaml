@@ -16,4 +16,15 @@ jobs:
         with:
           go-version: ">=1.17"
       - name: Format code
-        run: gofmt -l .
+        run: |
+          GOFILES = $(gofmt -l .)
+          echo 'GOFILES='$(GOFILES) >> $GITHUB_ENV
+        shell: bash
+      - name: Comment to PR
+        env:
+          PR_NUMBER: ${{ github.event.number }}
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+        run: |
+          echo "${env.GOFILES}" > /tmp/comment
+          gh pr comment "${PR_NUMBER}" -F /tmp/comment
+
