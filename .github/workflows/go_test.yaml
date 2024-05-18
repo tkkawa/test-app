@@ -19,7 +19,7 @@ jobs:
         run: |
           GOFILES=$(gofmt -l .)
           echo $(GOFILES)
-          echo 'GOFILES='$(GOFILES) >> $GITHUB_ENV
+          echo 'GOFILES='${GOFILES} >> $GITHUB_ENV
         shell: bash
       - name: Comment to PR
         env:
