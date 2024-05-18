@@ -25,7 +25,7 @@ jobs:
           PR_NUMBER: ${{ github.event.number }}
           GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
         run: |
-          echo ${{ env.GOFILES }} > /tmp/comment
+          echo "${{ env.GOFILES }}" > /tmp/comment
           gh pr comment "${PR_NUMBER}" -F /tmp/comment
         shell: bash
 
