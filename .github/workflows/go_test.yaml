@@ -34,12 +34,12 @@ jobs:
         with:
           github-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           script: |
-            const output = `## \` \` Format required files\n`;
+            const output = "## Format required files";
 
             github.issues.createCommen({
               issue_number: context.issue.number,
-              owner: context.repo.owner
-              repo: context.repo.repo
+              owner: context.repo.owner,
+              repo: context.repo.repo,
               body: output
             })
 
