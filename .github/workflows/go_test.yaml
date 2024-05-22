@@ -34,7 +34,7 @@ jobs:
         with:
           github-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           script: |
-            const output = "## Format required files\n<summary>files:</summary>\n${{ env.GOFILES }}";
+            const output = "## Format required files\n<summary>${{ env.GOFILES }}</summary>";
 
             github.issues.createComment({
               issue_number: context.issue.number,
