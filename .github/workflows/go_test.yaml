@@ -36,7 +36,7 @@ jobs:
           script: |
             const output = "## Format required files";
 
-            github.issues.createCommen({
+            github.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
