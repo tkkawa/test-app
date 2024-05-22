@@ -34,7 +34,7 @@ jobs:
         with:
           github-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           script: |
-            const output = `## Format required files`;
+            const output = `## \` \` Format required files\n`;
 
             github.issues.createCommen({
               issue_number: context.issue.number,
