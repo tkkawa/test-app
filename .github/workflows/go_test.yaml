@@ -32,7 +32,7 @@ jobs:
         with:
           github-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           script: |
-            const output = "## Format failed\n<summary>files: ${{ steps.format.outputs.stdout }}</summary>";
+            const output = "## Format failed\n<summary>files: ${{ steps.format.outputs.result }}</summary>";
 
             github.issues.createComment({
               issue_number: context.issue.number,
