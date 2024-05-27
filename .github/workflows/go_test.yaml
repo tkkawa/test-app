@@ -41,3 +41,5 @@ jobs:
               body: output
             })
 
+            exit 1
+
