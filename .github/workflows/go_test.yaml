@@ -18,18 +18,21 @@ jobs:
       - name: Format code
         id: format
         run: |
-          gofmt -l .
+          # gofmt -l .
+          OUTPUT=$(gofmt -l .)
+          echo "$OUTPUT"
+          echo "::set-output name=result::$OUTPUT"
           # GOFILES=$(gofmt -l .)
           # echo $(GOFILES)
           # echo 'GOFILES='${GOFILES} >> $GITHUB_ENV
         shell: bash
       - name: Comment to PR
-        if: steps.format.outputs.stdout != ''
+        if: steps.format.outputs.result != ''
         uses: actions/github-script@0.9.0
         with:
           github-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           script: |
-            const output = "## Format failed\n<summary>files: ${{ steps.format.outputs.stdout }}</summary>";
+            const output = "## Format failed\n<summary>files: ${{ steps.format.outputs.result }}</summary>";
 
             github.issues.createComment({
               issue_number: context.issue.number,
