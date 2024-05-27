@@ -18,21 +18,24 @@ jobs:
       - name: Format code
         id: format
         run: |
-          # gofmt -l .
-          # OUTPUT=$(gofmt -l .)
-          # echo "$OUTPUT"
-          # echo "::set-output name=result::$OUTPUT"
-          GOFILES=$(gofmt -l .)
-          echo $(GOFILES)
-          echo 'GOFILES='${GOFILES} >> $GITHUB_OUTPUT
+          FORMATTED_FILES=$(gofmt -l .)
+          if [ -n "$FORMATTED_FILES" ]; then
+            echo "The following files need to be formatted:"
+            echo "$FORMATTED_FILES"
+            echo "::set-output name=formatted_files::$FORMATTED_FILES"
+            exit 1
+          else
+            echo "All files are properly formatted."
+          fi
         shell: bash
-      - name: Comment to PR
-        if: steps.format.outputs.GOFILES != ''
+      
+      - name: Comment on PR if needed
+        if: steps.format.outcome == 'failure'
         uses: actions/github-script@0.9.0
         with:
           github-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           script: |
-            const output = "## Format failed\n<summary>files: ${{ steps.format.outputs.GOFILES }}</summary>";
+            const output = "## Format failed\n<summary>files: ${{ steps.format.outputs.formatted_files }}</summary>";
 
             github.issues.createComment({
               issue_number: context.issue.number,
@@ -41,5 +44,31 @@ jobs:
               body: output
             })
 
-            exit 1
+      # - name: Format code
+      #   id: format
+      #   run: |
+      #     # gofmt -l .
+      #     # OUTPUT=$(gofmt -l .)
+      #     # echo "$OUTPUT"
+      #     # echo "::set-output name=result::$OUTPUT"
+      #     GOFILES=$(gofmt -l .)
+      #     echo $(GOFILES)
+      #     echo 'GOFILES='${GOFILES} >> $GITHUB_OUTPUT
+      #   shell: bash
+      # - name: Comment to PR
+      #   if: steps.format.outputs.GOFILES != ''
+      #   uses: actions/github-script@0.9.0
+      #   with:
+      #     github-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+      #     script: |
+      #       const output = "## Format failed\n<summary>files: ${{ steps.format.outputs.GOFILES }}</summary>";
+
+      #       github.issues.createComment({
+      #         issue_number: context.issue.number,
+      #         owner: context.repo.owner,
+      #         repo: context.repo.repo,
+      #         body: output
+      #       })
+
+      #       exit 1
 
