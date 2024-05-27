@@ -22,7 +22,8 @@ jobs:
           if [ -n "$FORMATTED_FILES" ]; then
             echo "The following files need to be formatted:"
             echo "$FORMATTED_FILES"
-            echo "::set-output name=formatted_files::$FORMATTED_FILES"
+            # echo "::set-output name=formatted_files::$FORMATTED_FILES"
+            echo 'FORMATTED_FILES='${FORMATTED_FILES} >> $GITHUB_OUTPUT
             exit 1
           else
             echo "All files are properly formatted."
@@ -36,7 +37,7 @@ jobs:
         with:
           github-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           script: |
-            const output = "## Format failed\n<summary>files: ${{ steps.format.outputs.formatted_files }}</summary>";
+            const output = "## Format failed\n<summary>files: ${{ steps.format.outputs.FORMATTED_FILES }}</summary>";
 
             github.issues.createComment({
               issue_number: context.issue.number,
