@@ -24,7 +24,7 @@ jobs:
           # echo 'GOFILES='${GOFILES} >> $GITHUB_ENV
         shell: bash
       - name: Comment to PR
-        if: ${{ steps.format.outputs.stdout != '' }}
+        if: steps.format.outputs.stdout != ''
         uses: actions/github-script@0.9.0
         with:
           github-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
