@@ -26,6 +26,7 @@ jobs:
           echo $(GOFILES)
           echo 'GOFILES='${GOFILES} >> $GITHUB_OUTPUT
         shell: bash
+        continue-on-error: true
       - name: Comment to PR
         if: steps.format.outputs.GOFILES != ''
         uses: actions/github-script@0.9.0
