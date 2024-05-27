@@ -37,7 +37,7 @@ jobs:
         with:
           github-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           script: |
-            const output = "## Format failed\n<summary>Files that need to be formatted: ${{ steps.format.outputs.FORMATTED_FILES }}</summary>";
+            const output = "## Format failed\n<summary>Files that need to be formatted:\n ${{ steps.format.outputs.FORMATTED_FILES }}</summary>";
 
             github.issues.createComment({
               issue_number: context.issue.number,
