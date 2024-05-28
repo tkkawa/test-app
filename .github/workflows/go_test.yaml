@@ -25,6 +25,7 @@ jobs:
             # echo "::set-output name=formatted_files::$FORMATTED_FILES"
             FILE_COUNT=$(echo "$FORMATTED_FILES" | wc -l)
             echo $FILE_COUNT
+            echo $($FILE_COUNT-2)
             for file in $FORMATTED_FILES; do
               echo "1"
               echo $file
