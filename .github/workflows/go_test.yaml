@@ -1,0 +1,83 @@
+name: "Go test"
+on:
+  pull_request
+
+jobs:
+  formatter:
+    name: formatter
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.head_ref }}
+      - name: set up go
+        uses: actions/setup-go@v4
+        with:
+          go-version: ">=1.17"
+      - name: Format code
+        id: format
+        run: |
+          FORMATTED_FILES=$(gofmt -l .)
+          if [ -n "$FORMATTED_FILES" ]; then
+            echo "The following files need to be formatted:"
+            # echo "$FORMATTED_FILES"
+            # echo "::set-output name=formatted_files::$FORMATTED_FILES"
+            FILE_COUNT=$(echo "$FORMATTED_FILES" | wc -l)
+            echo $FILE_COUNT
+            echo $($FILE_COUNT-2)
+            for file in $FORMATTED_FILES; do
+              echo "1"
+              echo $file
+            done
+            echo 'FORMATTED_FILES='${FORMATTED_FILES} >> $GITHUB_OUTPUT
+            exit 1
+          else
+            echo "All files are properly formatted."
+          fi
+        shell: bash
+        continue-on-error: true
+      
+      - name: Comment on PR if needed
+        if: steps.format.outcome == 'failure'
+        uses: actions/github-script@0.9.0
+        with:
+          github-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          script: |
+            const output = "## Format failed\n<summary>Files that need to be formatted:\n ${{ steps.format.outputs.FORMATTED_FILES }}</summary>";
+
+            github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: output
+            })
+
+      # - name: Format code
+      #   id: format
+      #   run: |
+      #     # gofmt -l .
+      #     # OUTPUT=$(gofmt -l .)
+      #     # echo "$OUTPUT"
+      #     # echo "::set-output name=result::$OUTPUT"
+      #     GOFILES=$(gofmt -l .)
+      #     echo $(GOFILES)
+      #     echo 'GOFILES='${GOFILES} >> $GITHUB_OUTPUT
+      #   shell: bash
+      # - name: Comment to PR
+      #   if: steps.format.outputs.GOFILES != ''
+      #   uses: actions/github-script@0.9.0
+      #   with:
+      #     github-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+      #     script: |
+      #       const output = "## Format failed\n<summary>files: ${{ steps.format.outputs.GOFILES }}</summary>";
+
+      #       github.issues.createComment({
+      #         issue_number: context.issue.number,
+      #         owner: context.repo.owner,
+      #         repo: context.repo.repo,
+      #         body: output
+      #       })
+
+      #       exit 1
+
