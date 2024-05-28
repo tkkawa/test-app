@@ -21,8 +21,12 @@ jobs:
           FORMATTED_FILES=$(gofmt -l .)
           if [ -n "$FORMATTED_FILES" ]; then
             echo "The following files need to be formatted:"
-            echo "$FORMATTED_FILES"
+            # echo "$FORMATTED_FILES"
             # echo "::set-output name=formatted_files::$FORMATTED_FILES"
+            for file in $FORMATTED_FILES; do
+              echo "1"
+              echo $file
+            done
             echo 'FORMATTED_FILES='${FORMATTED_FILES} >> $GITHUB_OUTPUT
             exit 1
           else
