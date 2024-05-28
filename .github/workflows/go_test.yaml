@@ -23,6 +23,8 @@ jobs:
             echo "The following files need to be formatted:"
             # echo "$FORMATTED_FILES"
             # echo "::set-output name=formatted_files::$FORMATTED_FILES"
+            length=${#FORMATTED_FILES[@]}
+            echo length
             for file in $FORMATTED_FILES; do
               echo "1"
               echo $file
