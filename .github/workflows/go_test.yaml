@@ -24,7 +24,7 @@ jobs:
             # echo "$FORMATTED_FILES"
             # echo "::set-output name=formatted_files::$FORMATTED_FILES"
             length=${#FORMATTED_FILES[@]}
-            echo length
+            echo $length
             for file in $FORMATTED_FILES; do
               echo "1"
               echo $file
