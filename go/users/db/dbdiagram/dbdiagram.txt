@@ -1,0 +1,8 @@
+TABLE users {
+  id UUID [pk]
+  username varchar(14) [unique, not null]
+  display_name varchar(20)
+  bio varchar(160) [default: '']
+  created_at timestamp [default: 'now()']
+  updated_at timestamp [default: 'now()']
+}

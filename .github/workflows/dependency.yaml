@@ -1,0 +1,55 @@
+name: Check File Changes
+
+on:
+  pull_request:
+    paths:
+      - 'bazel-bin/**'  
+
+jobs:
+  check-file-changes:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    # - name: Set up Git
+    #   run: |
+    #     git config --global user.name "github-actions[bot]"
+    #     git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+    - name: Check for related file changes
+      id: check_changes
+      run: |
+        # Define the file to watch and related files
+        WATCHED_FILE="path/to/your/file.txt"
+        RELATED_FILE="go/users/db/dbdiagram/dbdiagram.txt"
+
+        if ! git diff --name-only HEAD^ HEAD | grep -q "$RELATED_FILE"; then
+          echo "Related file $file has not been changed."
+        else
+          echo "Related file $file has been changed."
+        fi
+
+        # Check if the watched file has changed
+        # if git diff --name-only HEAD^ HEAD | grep -q "$WATCHED_FILE"; then
+        #   echo "The watched file has changed. Checking related files..."
+        #   for file in "${RELATED_FILES[@]}"; do
+        #     if ! git diff --name-only HEAD^ HEAD | grep -q "$file"; then
+        #       echo "Related file $file has not been changed."
+        #     else
+        #       echo "Related file $file has been changed."
+        #     fi
+        #   done
+        # else
+        #   echo "The watched file has not changed."
+        # fi
+
+    - name: Output related file changes
+      run: |
+        echo "Related files that need to be changed:"
+        for file in "${RELATED_FILES[@]}"; do
+          if ! git diff --name-only HEAD^ HEAD | grep -q "$file"; then
+            echo "$file"
+          fi
+        done
